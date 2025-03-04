@@ -5,6 +5,8 @@ environment: {sdk: ^3.7.0, flutter: ">=3.29.0"}
 repository: https://github.com/aprosail/auto-stories
 
 dependencies:
+  analyzer: ^7.3.0
+  analyzer_plugin: ^0.13.0
   flutter: {sdk: flutter}
   path: ^1.9.1
   yaml: ^3.1.3

@@ -8,7 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions: {id-token: write}
     steps:
-      # Setup environment and review code as preparations.
       - uses: actions/checkout@v4
       - uses: flutter-actions/setup-flutter@v4
         with: {channel: stable, version: 3.29.0}
