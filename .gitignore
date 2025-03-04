@@ -13,5 +13,6 @@
 .flutter-plugins-dependencies
 build/
 
-# Auto generated pubignore.
+# Auto generated files.
+.changelog.md
 .pubignore

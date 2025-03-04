@@ -1,4 +1,4 @@
-name: check
+name: review
 
 on:
   pull_request: {branches: [main]}

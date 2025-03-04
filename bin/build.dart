@@ -2,9 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:path/path.dart';
+import 'package:yaml/yaml.dart';
 
 Future<void> main(List<String> arguments) async {
   final root = Directory.current;
+
+  // Generate corresponding files.
+  generateChangelog(root);
   generatePubignore(root, [
     'bin/build.dart', // Build script.
   ]);
@@ -41,6 +45,36 @@ void generatePubignore(Directory root, List<String> additionalIgnores) {
     '',
   ].join('\n');
   File(join(root.path, '.pubignore')).writeAsStringSync(content);
+}
+
+/// Generate a `.changelog.md` file containing the changelog of current version.
+/// under the [root] folder. There is supposed to be a `pubspec.yaml`
+/// manifest file located directly under the [root] folder,
+/// where it can get current version from.
+/// If there's no `CHANGELOG.md` and `pubspec.yaml`
+/// under the [root] folder it will throw an [Exception].
+void generateChangelog(Directory root) {
+  // Get version from pubspec.yaml.
+  final manifest = File(join(root.path, 'pubspec.yaml')).readAsStringSync();
+  final map = loadYamlDocument(manifest).contents.value as YamlMap;
+  final version = map['version'] as String;
+
+  // Write into the .changelog file.
+  final content = File(join(root.path, 'CHANGELOG.md')).readAsStringSync();
+  final lines = content.split('\n').map((line) => line.trim());
+  final buffer = StringBuffer();
+  var inside = false;
+  for (final line in lines) {
+    if (line == '## $version') {
+      inside = true;
+    } else if (line.startsWith('##') && inside) {
+      break;
+    } else if (inside) {
+      buffer.writeln(line);
+    }
+  }
+  final result = buffer.toString().trim();
+  File(join(root.path, '.changelog.md')).writeAsStringSync(result);
 }
 
 /// Encapsulation of execution of a command.
