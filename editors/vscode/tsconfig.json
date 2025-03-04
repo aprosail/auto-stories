@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    // Module resolution.
+    "module": "ESNext",
+    "lib": ["ESNext"],
+    "moduleResolution": "node",
+
+    // Strict mode.
+    "strict": true,
+    "strictBindCallApply": true,
+    "strictBuiltinIteratorReturn": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src/**/*.ts", "build.ts", "eslint.config.ts"]
+}

@@ -1,0 +1,6 @@
+# Node dependencies and auto generated artifacts.
+node_modules/
+out/
+
+# Assets synced from outside root.
+license.txt

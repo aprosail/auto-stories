@@ -11,6 +11,7 @@ Future<void> main(List<String> arguments) async {
   generateChangelog(root);
   generatePubignore(root, [
     'bin/build.dart', // Build script.
+    'editors/', // Code editor plugins.
   ]);
 
   // Run redirected commands.
