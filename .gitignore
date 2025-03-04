@@ -1,0 +1,14 @@
+# Code editors and local preferences.
+.DS_Store
+.idea/
+*.iml
+*.ipr
+*.iws
+*.swp
+
+# Flutter/Dart/Pub.
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
