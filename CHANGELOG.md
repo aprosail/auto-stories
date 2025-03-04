@@ -1,3 +1,3 @@
 ## 0.0.1
 
-- Initial release.
+- `feat`: shared options of `analysis_options.yaml`.
