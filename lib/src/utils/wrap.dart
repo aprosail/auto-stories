@@ -5,6 +5,33 @@ library;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
+/// Wraps about environments in the widget tree context.
+extension WrapEnvironments on Widget {
+  /// Wrap current widget with a [MediaQuery] widget with specified [data].
+  MediaQuery media(MediaQueryData data, {Key? key}) =>
+      MediaQuery(key: key, data: data, child: this);
+
+  /// Wrap current widget with a [Directionality] widget
+  /// with specified [direction].
+  Directionality textDirection(TextDirection direction, {Key? key}) =>
+      Directionality(key: key, textDirection: direction, child: this);
+
+  /// Ensure the text in such widget can display normally.
+  /// See [EnsureText] for more details.
+  EnsureText ensureText({
+    Key? key,
+    MediaQueryData? media,
+    TextDirection? direction,
+    TextDirection defaultDirection = TextDirection.ltr,
+  }) => EnsureText(
+    key: key,
+    media: media,
+    direction: direction,
+    defaultDirection: defaultDirection,
+    child: this,
+  );
+}
+
 /// A widget to ensure the [Text] widget can display in its descendants.
 ///
 /// The [Text] widget requires a [MediaQuery] and [Directionality]
@@ -67,17 +94,13 @@ class EnsureText extends StatelessWidget {
 
     // Ensure directionality environment.
     if (direction != null || Directionality.maybeOf(context) == null) {
-      handler = Directionality(
-        textDirection: direction ?? defaultDirection,
-        child: handler,
-      );
+      handler = handler.textDirection(direction ?? defaultDirection);
     }
 
     // Ensure media query environment.
     if (media != null || MediaQuery.maybeOf(context) == null) {
-      handler = MediaQuery(
-        data: media ?? MediaQueryData.fromView(View.of(context)),
-        child: child,
+      handler = handler.media(
+        media ?? MediaQueryData.fromView(View.of(context)),
       );
     }
 
