@@ -36,7 +36,7 @@ extension WrapEnvironments on Widget {
 extension WrapText on String {
   /// Wrap a [String] with a [Text] widget.
   ///
-  /// This getter is designed as a shortcut,
+  /// This getter is designed as a shortcut, especially for testing propose.
   /// and if there's necessary to specify more parameters of the [Text] widget,
   /// you may consider the [asText] extension method, which is similar.
   Text get text => Text(this);
@@ -164,4 +164,45 @@ class EnsureText extends StatelessWidget {
       ..add(EnumProperty<TextDirection>('direction', direction))
       ..add(EnumProperty<TextDirection>('defaultDirection', defaultDirection));
   }
+}
+
+/// Encapsulations about [Align] and its subclasses.
+extension WrapAlignment on Widget {
+  /// Wrap current widget with [Center].
+  ///
+  /// This getter is designed as a shortcut, especially for testing propose.
+  /// and if there's necessary to apply some parameters to the [Center] widget,
+  /// please use the [wrapCenter] or [align] extension method instead.
+  Center get center => Center(child: this);
+
+  /// Wrap current widget with [Align].
+  Align align({
+    Key? key,
+    AlignmentGeometry alignment = Alignment.center,
+    double? widthFactor,
+    double? heightFactor,
+  }) => Align(
+    key: key,
+    alignment: alignment,
+    widthFactor: widthFactor,
+    heightFactor: heightFactor,
+    child: this,
+  );
+
+  /// Wrap current widget with [Center].
+  ///
+  /// This method provides all non-deprecated parameters of the [Center] widget.
+  /// But it's strongly recommended to use [align] instead,
+  /// because [Center] is exactly a subclass of [Align].
+  /// It's only recommend to use this method if it's really necessary
+  /// to make the return value match the [Center] type.
+  /// And you may also consider the [center] getter,
+  /// which might be more convenient for general situations.
+  Center wrapCenter({Key? key, double? widthFactor, double? heightFactor}) =>
+      Center(
+        key: key,
+        widthFactor: widthFactor,
+        heightFactor: heightFactor,
+        child: this,
+      );
 }
