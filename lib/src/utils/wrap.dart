@@ -1,3 +1,51 @@
+/// Syntax sugar and utilities to support chain-style programming in Flutter.
+///
+/// Widget nesting might make the code hard to read and inconvenient to modify.
+/// The chain-style programming can make the codebase
+/// more readable and maintainable.
+/// For example:
+///
+/// Before:
+///
+/// ```dart
+/// import 'package:flutter/widgets.dart';
+/// ...
+/// class Example extends StatelessWidget {
+///   const Example({super.key});
+/// ...
+///   @override
+///   Widget build(BuildContext context) => MediaQuery(
+///     data: MediaQueryData.fromView(View.of(context)),
+///     child: const Directionality(
+///       textDirection: TextDirection.ltr,
+///       child: Center(
+///         child: Text('message')
+///       ),
+///     ),
+///   );
+/// }
+/// ```
+///
+/// After:
+///
+/// ```dart
+/// import 'package:auto_stories/auto_stories.dart';
+/// import 'package:flutter/widgets.dart';
+/// ...
+/// class Example extends StatelessWidget {
+///   const Example({super.key});
+/// ...
+///   @override
+///   Widget build(BuildContext context) => 'message'.text.center
+///       .textDirection(TextDirection.ltr)
+///       .media(MediaQueryData.fromView(View.of(context)));
+/// }
+/// ```
+///
+/// But attention that those method and getter encapsulations will
+/// prevent the builders from using `const` modifier.
+/// Please consider it in performance sensitive scenarios.
+///
 /// @docImport 'package:flutter/cupertino.dart';
 /// @docImport 'package:flutter/material.dart';
 library;
