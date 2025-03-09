@@ -32,6 +32,55 @@ extension WrapEnvironments on Widget {
   );
 }
 
+/// Encapsulate a [String] as [Text].
+extension WrapText on String {
+  /// Wrap a [String] with a [Text] widget.
+  ///
+  /// This getter is designed as a shortcut,
+  /// and if there's necessary to specify more parameters of the [Text] widget,
+  /// you may consider the [asText] extension method, which is similar.
+  Text get text => Text(this);
+
+  /// Wrap a [String] with a [Text] widget.
+  ///
+  /// This method provides all non-deprecated parameters of the [Text] widget.
+  /// And if there's no necessary to specify those parameters,
+  /// you may consider the [text] getter, which might simplify your code,
+  /// especially for testing propose.
+  Text asText({
+    Key? key,
+    TextStyle? style,
+    StrutStyle? strutStyle,
+    TextAlign? textAlign,
+    TextDirection? textDirection,
+    Locale? locale,
+    bool? softWrap,
+    TextOverflow? overflow,
+    TextScaler? textScaler,
+    int? maxLines,
+    String? semanticsLabel,
+    TextWidthBasis? textWidthBasis,
+    TextHeightBehavior? textHeightBehavior,
+    Color? selectionColor,
+  }) => Text(
+    this,
+    key: key,
+    style: style,
+    strutStyle: strutStyle,
+    textAlign: textAlign,
+    textDirection: textDirection,
+    locale: locale,
+    softWrap: softWrap,
+    overflow: overflow,
+    textScaler: textScaler,
+    maxLines: maxLines,
+    semanticsLabel: semanticsLabel,
+    textWidthBasis: textWidthBasis,
+    textHeightBehavior: textHeightBehavior,
+    selectionColor: selectionColor,
+  );
+}
+
 /// A widget to ensure the [Text] widget can display in its descendants.
 ///
 /// The [Text] widget requires a [MediaQuery] and [Directionality]
