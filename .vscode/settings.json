@@ -1,0 +1,19 @@
+{
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+  "editor.tabSize": 2,
+  "editor.rulers": [80],
+
+  // Format on save (extension required).
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {"source.organizeImports": "always"},
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[ignore]": {"editor.defaultFormatter": "foxundermoon.shell-format"},
+  "[properties]": {"editor.defaultFormatter": "foxundermoon.shell-format"},
+  "[dart]": {"editor.defaultFormatter": "Dart-Code.dart-code"},
+
+  // File nesting options (enable on local settings as your wish).
+  "explorer.fileNesting.patterns": {
+    "pubspec.yaml": "pubspec.lock, .metadata"
+  }
+}
