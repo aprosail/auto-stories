@@ -1,0 +1,7 @@
+# Code editor and platform local preferences.
+.DS_Store
+.idea/
+*.iml
+*.ipr
+*.iws
+*.swp
