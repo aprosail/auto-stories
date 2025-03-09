@@ -5,3 +5,8 @@
 *.ipr
 *.iws
 *.swp
+
+# Dart and Flutter auto generated files.
+.dart_tool/
+build/
+pubspec.lock

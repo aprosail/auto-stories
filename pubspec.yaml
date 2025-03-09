@@ -1,0 +1,10 @@
+name: auto_stories
+description: Auto generate data and widget stories preview once file changed.
+version: 0.0.0
+environment: {sdk: "^3.7.0", flutter: ">=3.29.0"}
+
+dependencies:
+  flutter: {sdk: flutter}
+
+dev_dependencies:
+  flutter_test: {sdk: flutter}
