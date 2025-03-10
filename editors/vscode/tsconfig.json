@@ -11,5 +11,5 @@
     "strictPropertyInitialization": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src/**/*.ts", "ci.ts"]
+  "include": ["src/**/*.ts", "ci.ts", "eslint.config.ts"]
 }
