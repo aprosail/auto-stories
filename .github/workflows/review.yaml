@@ -1,4 +1,4 @@
-name: check
+name: review
 
 on:
   pull_request: {branches: [main]}
@@ -14,4 +14,4 @@ jobs:
       - run: dart pub get
       - run: dart format --set-exit-if-changed --output none .
       - run: dart analyze --fatal-infos --fatal-warnings
-      - run: flutter test
+      - run: dart run bin/build.dart test

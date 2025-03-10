@@ -1,6 +1,6 @@
 import 'package:auto_stories/generator.dart';
 
-Future<void> main() async {
+Future<void> main(List<String> arguments) async {
   final package = DartPackage.resolve('.');
-  await package.test();
+  if (arguments.contains('test')) await package.test();
 }
