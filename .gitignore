@@ -11,5 +11,8 @@
 build/
 pubspec.lock
 
-# Node dependencies (VSCode extension).
+# VSCode Extension: Node dependencies and auto generated files.
 node_modules/
+editors/vscode/.prettierrc.yaml
+editors/vscode/.prettierignore
+editors/vscode/license.txt
