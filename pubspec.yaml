@@ -6,6 +6,8 @@ environment: {sdk: "^3.7.0", flutter: ">=3.29.0"}
 
 dependencies:
   flutter: {sdk: flutter}
+  path: ^1.9.1
 
 dev_dependencies:
   flutter_test: {sdk: flutter}
+  test: ^1.25.15
