@@ -1,0 +1,7 @@
+{
+  "name": "auto-stories",
+  "description": "Auto Stories development supports.",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true
+}
