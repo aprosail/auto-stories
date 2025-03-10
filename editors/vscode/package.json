@@ -3,5 +3,12 @@
   "description": "Auto Stories development supports.",
   "version": "0.0.0",
   "type": "module",
-  "private": true
+  "private": true,
+  "scripts": {
+    "format": "prettier --write .",
+    "check": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "^3.5.3"
+  }
 }

@@ -10,3 +10,6 @@
 .dart_tool/
 build/
 pubspec.lock
+
+# Node dependencies (VSCode extension).
+node_modules/
