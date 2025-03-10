@@ -113,8 +113,8 @@ class DartPackage {
   }
 }
 
-const _dartTestImport = 'package:test/test.dart';
-const _flutterTestImport = 'package:flutter_test/flutter_test.dart';
+const _dartTestImport = 'package:test/';
+const _flutterTestImport = 'package:flutter_test/';
 
 /// Whether a Dart [code] contains specified import.
 bool containsImport(String code, String importIdentifier) {
@@ -125,8 +125,8 @@ bool containsImport(String code, String importIdentifier) {
 
     // Test the import identifier, consider both single and double quotes.
     final content = line.substring('import'.length).trimLeft();
-    if (content.startsWith("'$importIdentifier'") ||
-        content.startsWith('"$importIdentifier"')) {
+    if (content.startsWith("'$importIdentifier") ||
+        content.startsWith('"$importIdentifier')) {
       return true;
     }
   }
