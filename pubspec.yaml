@@ -1,7 +1,7 @@
 name: auto_stories
 description: Auto generate data and widget stories preview once file changed.
 repository: https://github.com/aprosail/auto-stories
-version: 0.0.1
+version: 0.0.2
 environment: {sdk: "^3.7.0", flutter: ">=3.29.0"}
 
 dependencies:
