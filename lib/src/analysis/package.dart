@@ -198,8 +198,10 @@ extension CopyEnsureFile on File {
 extension CopyDirectory on Directory {
   /// Copy all files in the directory to the [newPath].
   void copyAllFilesSync(String newPath) {
-    for (final file in listSync(recursive: true).whereType<File>()) {
-      file.copyEnsureSync(join(newPath, relative(file.path, from: path)));
+    final e = listSync(recursive: true);
+    for (final dir in e.whereType<Directory>()) dir.createSync(recursive: true);
+    for (final file in e.whereType<File>()) {
+      file.copySync(join(newPath, relative(file.path, from: path)));
     }
   }
 }
