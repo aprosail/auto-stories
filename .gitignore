@@ -15,6 +15,7 @@ build/
 .pub/
 .pubignore
 pubspec.lock
+!example/pubspec.lock
 
 # Symbolication and obfuscation.
 app.*.symbols
