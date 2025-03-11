@@ -32,6 +32,15 @@ class DartPackage {
   /// Test directory of the Dart package, the entry of all tests.
   Directory get testDirectory => Directory(join(root.path, 'test'));
 
+  /// The `.gitignore` file at [root], but possibly not exist.
+  File get rootGitignore => File(join(root.path, '.gitignore'));
+
+  /// All `.gitignore` files inside the package.
+  Iterable<File> get gitignores => root
+      .listSync(recursive: true)
+      .whereType<File>()
+      .where((file) => basename(file.path) == '.gitignore');
+
   /// Run a command in the [root] directory.
   ///
   /// 1. This method is almost an encapsulation on [Process.start].
