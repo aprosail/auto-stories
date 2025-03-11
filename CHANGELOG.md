@@ -9,7 +9,6 @@
 - `feat`: react as reactive and flexible data handler outside widget tree.
 - `feat`: dart package abstraction and common utilities.
 - `feat`: utilities about file and folder copy.
-
 - `perf`: remove unnecessary linter rules.
 - `docs`: more readable docs in readme.
 
