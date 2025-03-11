@@ -13,7 +13,7 @@ linter:
   rules:
     - always_declare_return_types
     # - always_put_control_body_on_new_line # Might make code ugly.
-    - always_put_required_named_parameters_first
+    # - always_put_required_named_parameters_first # Might make code ugly.
     # - always_specify_types # Conflict: avoid_types_on_closure_parameters.
     # - always_use_package_imports # Might make code less readable.
     - annotate_overrides
@@ -70,7 +70,7 @@ linter:
     - conditional_uri_does_not_exist
     - constant_identifier_names
     - control_flow_in_finally
-    - curly_braces_in_flow_control_structures
+    # - curly_braces_in_flow_control_structures # Might make code ugly.
     - dangling_library_doc_comments
     - depend_on_referenced_packages
     - deprecated_consistency
@@ -129,7 +129,7 @@ linter:
     - parameter_assignments
     - prefer_adjacent_string_concatenation
     - prefer_asserts_in_initializer_lists
-    - prefer_asserts_with_message
+    # - prefer_asserts_with_message # Might make code complex.
     - prefer_collection_literals
     - prefer_conditional_assignment
     - prefer_const_constructors

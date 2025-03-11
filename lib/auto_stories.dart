@@ -2,5 +2,6 @@
 library;
 
 export 'src/generate/annotations.dart';
+export 'src/state.dart';
 export 'src/system.dart';
 export 'src/utils.dart';

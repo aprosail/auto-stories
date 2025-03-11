@@ -51,6 +51,7 @@
 library;
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 
 /// Wraps about environments in the widget tree context.
@@ -253,4 +254,241 @@ extension WrapAlignment on Widget {
         heightFactor: heightFactor,
         child: this,
       );
+}
+
+/// Encapsulation of flex layout on a list of widgets.
+extension WrapFlex on List<Widget> {
+  /// Wrap the children with a [Column] widget with all parameters default.
+  ///
+  /// This getter is designed as a shortcut, especially for testing propose.
+  /// And if there's necessary to apply some parameters of [Column],
+  /// please consider using the [asColumn] extension method.
+  /// There's also another getter shortcut [columnCenter]
+  /// which helps to align the children at center.
+  Column get column => Column(children: this);
+
+  /// Wrap the children with a [Column] widget, and make it center aligned.
+  ///
+  /// This getter is designed as a shortcut, especially for testing propose.
+  /// And if there's necessary to apply some parameters of [Column],
+  /// please consider using the [asColumn] extension method.
+  Column get columnCenter => Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    mainAxisSize: MainAxisSize.min,
+    children: this,
+  );
+
+  /// Wrap a column with configurable parameters.
+  Column asColumn({
+    Key? key,
+    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
+    MainAxisSize mainAxisSize = MainAxisSize.max,
+    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+    TextDirection? textDirection,
+    VerticalDirection verticalDirection = VerticalDirection.down,
+    TextBaseline? textBaseline,
+    double spacing = 0.0,
+  }) => Column(
+    key: key,
+    mainAxisAlignment: mainAxisAlignment,
+    mainAxisSize: mainAxisSize,
+    crossAxisAlignment: crossAxisAlignment,
+    textDirection: textDirection,
+    verticalDirection: verticalDirection,
+    textBaseline: textBaseline,
+    spacing: spacing,
+    children: this,
+  );
+}
+
+/// Encapsulation for gestures and mouse interactions.
+extension WrapInteract on Widget {
+  /// Wrap current widget with a [GestureDetector].
+  GestureDetector gesture({
+    Key? key,
+
+    // Tap.
+    void Function(TapDownDetails details)? onTapDown,
+    void Function(TapUpDetails details)? onTapUp,
+    void Function()? onTap,
+    void Function()? onTapCancel,
+
+    // Secondary tap.
+    void Function()? onSecondaryTap,
+    void Function(TapDownDetails details)? onSecondaryTapDown,
+    void Function(TapUpDetails details)? onSecondaryTapUp,
+    void Function()? onSecondaryTapCancel,
+
+    // Tertiary tap.
+    void Function(TapDownDetails details)? onTertiaryTapDown,
+    void Function(TapUpDetails details)? onTertiaryTapUp,
+    void Function()? onTertiaryTapCancel,
+
+    // Double tap.
+    void Function(TapDownDetails details)? onDoubleTapDown,
+    void Function()? onDoubleTap,
+    void Function()? onDoubleTapCancel,
+
+    // Long press.
+    void Function(LongPressDownDetails details)? onLongPressDown,
+    void Function()? onLongPressCancel,
+    void Function()? onLongPress,
+    void Function(LongPressStartDetails details)? onLongPressStart,
+    void Function(LongPressMoveUpdateDetails details)? onLongPressMoveUpdate,
+    void Function()? onLongPressUp,
+    void Function(LongPressEndDetails details)? onLongPressEnd,
+
+    // Secondary long press.
+    void Function(LongPressDownDetails details)? onSecondaryLongPressDown,
+    void Function()? onSecondaryLongPressCancel,
+    void Function()? onSecondaryLongPress,
+    void Function(LongPressStartDetails details)? onSecondaryLongPressStart,
+    void Function(LongPressMoveUpdateDetails details)?
+    onSecondaryLongPressMoveUpdate,
+    void Function()? onSecondaryLongPressUp,
+    void Function(LongPressEndDetails details)? onSecondaryLongPressEnd,
+
+    // Tertiary long press.
+    void Function(LongPressDownDetails details)? onTertiaryLongPressDown,
+    void Function()? onTertiaryLongPressCancel,
+    void Function()? onTertiaryLongPress,
+    void Function(LongPressStartDetails details)? onTertiaryLongPressStart,
+    void Function(LongPressMoveUpdateDetails details)?
+    onTertiaryLongPressMoveUpdate,
+    void Function()? onTertiaryLongPressUp,
+    void Function(LongPressEndDetails details)? onTertiaryLongPressEnd,
+
+    // Vertical drag.
+    void Function(DragDownDetails details)? onVerticalDragDown,
+    void Function(DragStartDetails details)? onVerticalDragStart,
+    void Function(DragUpdateDetails details)? onVerticalDragUpdate,
+    void Function(DragEndDetails details)? onVerticalDragEnd,
+    void Function()? onVerticalDragCancel,
+
+    // Horizontal drag.
+    void Function(DragDownDetails details)? onHorizontalDragDown,
+    void Function(DragStartDetails details)? onHorizontalDragStart,
+    void Function(DragUpdateDetails details)? onHorizontalDragUpdate,
+    void Function(DragEndDetails details)? onHorizontalDragEnd,
+    void Function()? onHorizontalDragCancel,
+
+    // Force press.
+    void Function(ForcePressDetails details)? onForcePressStart,
+    void Function(ForcePressDetails details)? onForcePressPeak,
+    void Function(ForcePressDetails details)? onForcePressUpdate,
+    void Function(ForcePressDetails details)? onForcePressEnd,
+
+    // Pan.
+    void Function(DragDownDetails details)? onPanDown,
+    void Function(DragStartDetails details)? onPanStart,
+    void Function(DragUpdateDetails details)? onPanUpdate,
+    void Function(DragEndDetails details)? onPanEnd,
+    void Function()? onPanCancel,
+
+    // Scale.
+    void Function(ScaleStartDetails details)? onScaleStart,
+    void Function(ScaleUpdateDetails details)? onScaleUpdate,
+    void Function(ScaleEndDetails details)? onScaleEnd,
+
+    // Configurations.
+    HitTestBehavior? behavior,
+    bool excludeFromSemantics = false,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    bool trackpadScrollCausesScale = false,
+    Offset trackpadScrollToScaleFactor = kDefaultTrackpadScrollToScaleFactor,
+    Set<PointerDeviceKind>? supportedDevices,
+  }) => GestureDetector(
+    key: key,
+
+    // Tap.
+    onTapDown: onTapDown,
+    onTapUp: onTapUp,
+    onTap: onTap,
+    onTapCancel: onTapCancel,
+
+    // Secondary Tap.
+    onSecondaryTap: onSecondaryTap,
+    onSecondaryTapDown: onSecondaryTapDown,
+    onSecondaryTapUp: onSecondaryTapUp,
+    onSecondaryTapCancel: onSecondaryTapCancel,
+
+    // Tertiary Tap.
+    onTertiaryTapDown: onTertiaryTapDown,
+    onTertiaryTapUp: onTertiaryTapUp,
+    onTertiaryTapCancel: onTertiaryTapCancel,
+
+    // Double Tap.
+    onDoubleTapDown: onDoubleTapDown,
+    onDoubleTap: onDoubleTap,
+    onDoubleTapCancel: onDoubleTapCancel,
+
+    // Long press.
+    onLongPressDown: onLongPressDown,
+    onLongPressCancel: onLongPressCancel,
+    onLongPress: onLongPress,
+    onLongPressStart: onLongPressStart,
+    onLongPressMoveUpdate: onLongPressMoveUpdate,
+    onLongPressUp: onLongPressUp,
+    onLongPressEnd: onLongPressEnd,
+
+    // Secondary long press.
+    onSecondaryLongPressDown: onSecondaryLongPressDown,
+    onSecondaryLongPressCancel: onSecondaryLongPressCancel,
+    onSecondaryLongPress: onSecondaryLongPress,
+    onSecondaryLongPressStart: onSecondaryLongPressStart,
+    onSecondaryLongPressMoveUpdate: onSecondaryLongPressMoveUpdate,
+    onSecondaryLongPressUp: onSecondaryLongPressUp,
+    onSecondaryLongPressEnd: onSecondaryLongPressEnd,
+
+    // Tertiary long press.
+    onTertiaryLongPressDown: onTertiaryLongPressDown,
+    onTertiaryLongPressCancel: onTertiaryLongPressCancel,
+    onTertiaryLongPress: onTertiaryLongPress,
+    onTertiaryLongPressStart: onTertiaryLongPressStart,
+    onTertiaryLongPressMoveUpdate: onTertiaryLongPressMoveUpdate,
+    onTertiaryLongPressUp: onTertiaryLongPressUp,
+    onTertiaryLongPressEnd: onTertiaryLongPressEnd,
+
+    // Vertical drag.
+    onVerticalDragDown: onVerticalDragDown,
+    onVerticalDragStart: onVerticalDragStart,
+    onVerticalDragUpdate: onVerticalDragUpdate,
+    onVerticalDragEnd: onVerticalDragEnd,
+    onVerticalDragCancel: onVerticalDragCancel,
+
+    // Horizontal drag.
+    onHorizontalDragDown: onHorizontalDragDown,
+    onHorizontalDragStart: onHorizontalDragStart,
+    onHorizontalDragUpdate: onHorizontalDragUpdate,
+    onHorizontalDragEnd: onHorizontalDragEnd,
+    onHorizontalDragCancel: onHorizontalDragCancel,
+
+    // Force press.
+    onForcePressStart: onForcePressStart,
+    onForcePressPeak: onForcePressPeak,
+    onForcePressUpdate: onForcePressUpdate,
+    onForcePressEnd: onForcePressEnd,
+
+    // Pan.
+    onPanDown: onPanDown,
+    onPanStart: onPanStart,
+    onPanUpdate: onPanUpdate,
+    onPanEnd: onPanEnd,
+    onPanCancel: onPanCancel,
+
+    // Scale.
+    onScaleStart: onScaleStart,
+    onScaleUpdate: onScaleUpdate,
+    onScaleEnd: onScaleEnd,
+
+    // Configurations.
+    behavior: behavior,
+    excludeFromSemantics: excludeFromSemantics,
+    dragStartBehavior: dragStartBehavior,
+    trackpadScrollCausesScale: trackpadScrollCausesScale,
+    trackpadScrollToScaleFactor: trackpadScrollToScaleFactor,
+    supportedDevices: supportedDevices,
+
+    child: this,
+  );
 }
