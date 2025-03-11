@@ -1,5 +1,5 @@
-import {copyFileSync} from "node:fs"
-import {join, resolve} from "node:path"
+import { copyFileSync } from "node:fs"
+import { join, resolve } from "node:path"
 
 function syncAssets(from: string, to: string, files: string[]) {
   for (const file of files) copyFileSync(join(from, file), join(to, file))

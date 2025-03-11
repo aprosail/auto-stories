@@ -1,8 +1,8 @@
-import {includeIgnoreFile} from "@eslint/compat"
+import { includeIgnoreFile } from "@eslint/compat"
 import pluginJS from "@eslint/js"
-import type {Linter} from "eslint"
+import type { Linter } from "eslint"
 import globals from "globals"
-import {join} from "node:path"
+import { join } from "node:path"
 import tseslint from "typescript-eslint"
 
 export default [
@@ -10,7 +10,7 @@ export default [
   pluginJS.configs.recommended,
   ...(tseslint.configs.strict as Linter.Config[]),
   {
-    languageOptions: {globals: globals.node},
+    languageOptions: { globals: globals.node },
     rules: {
       "@typescript-eslint/no-unused-vars": "warn",
       "dot-notation": "warn",
