@@ -32,6 +32,9 @@ class DartPackage {
   /// Test directory of the Dart package, the entry of all tests.
   Directory get testDirectory => Directory(join(root.path, 'test'));
 
+  /// The `.pubignore` file of the package.
+  File get pubignore => File(join(root.path, '.pubignore'));
+
   /// The `.gitignore` file at [root], but possibly not exist.
   File get rootGitignore => File(join(root.path, '.gitignore'));
 
@@ -140,7 +143,7 @@ class DartPackage {
     for (final file in basedOn) {
       final basePath = normalize(relative(file.parent.path, from: root.path));
       final resolvedBase = basePath == '.' ? '' : '$basePath/';
-      buffer.writeln('# Synced from $basePath');
+      buffer.writeln('\n# Synced from $basePath');
       file
           .readAsStringSync()
           .split('\n')
@@ -149,6 +152,7 @@ class DartPackage {
           .map((line) => '$resolvedBase$line')
           .forEach(buffer.writeln);
     }
+    pubignore.writeAsStringSync('$buffer\n');
   }
 }
 
