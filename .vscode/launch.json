@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "name": "vscode extension",
+      "args": [
+        "${workspaceFolder}/example", // Opened folder.
+        "--extensionDevelopmentPath=${workspaceFolder}/editors/vscode/out"
+      ],
+      "preLaunchTask": "vscode.build",
+      "request": "launch",
+      "type": "extensionHost"
+    }
+  ]
+}

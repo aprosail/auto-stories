@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "vscode.build",
+      "type": "npm",
+      "script": "build",
+      "options": { "cwd": "${workspaceFolder}/editors/vscode" }
+    }
+  ]
+}
