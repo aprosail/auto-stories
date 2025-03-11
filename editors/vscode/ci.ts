@@ -1,7 +1,13 @@
 import terser from "@rollup/plugin-terser"
 import typescript from "@rollup/plugin-typescript"
 import { createVSIX } from "@vscode/vsce"
-import { copyFileSync, readFileSync, writeFileSync } from "node:fs"
+import {
+  copyFileSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs"
 import { join, relative, resolve } from "node:path"
 import { argv } from "node:process"
 import { rollup } from "rollup"
@@ -65,6 +71,13 @@ function syncAssets(from: string, to: string, files: string[]) {
   for (const file of files) copyFileSync(join(from, file), join(to, file))
 }
 
+/** Empty everything inside the folder but keep the folder. */
+export function emptyFolder(path: string) {
+  for (const name of readdirSync(path)) {
+    rmSync(join(path, name), { recursive: true })
+  }
+}
+
 // Entry point of this script.
 async function main() {
   const root = import.meta.dirname
@@ -79,12 +92,14 @@ async function main() {
 
   // Build mode: build for debug preview.
   if (argv.includes("build")) {
+    emptyFolder(out)
     await compile(join(src, "extension.ts"), outFile)
     syncManifest(root, out, outFile, true)
   }
 
   // Release mode: build for release and output vsix.
   if (argv.includes("release")) {
+    emptyFolder(out)
     await compile(join(src, "extension.ts"), outFile)
     syncManifest(root, out, outFile, false)
     syncAssets(root, out, ["readme.md", "changelog.md", "license.txt"])
