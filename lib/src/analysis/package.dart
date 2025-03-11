@@ -182,3 +182,24 @@ bool containsImport(String code, String importIdentifier) {
   }
   return false;
 }
+
+/// Copy a file and create corresponding folders if necessary.
+extension CopyEnsureFile on File {
+  /// Copy the file and create corresponding folders if necessary,
+  /// to ensure that all folders in the [newPath] exists,
+  /// that the file can be copied safely.
+  void copyEnsureSync(String newPath) {
+    File(newPath).parent.createSync(recursive: true);
+    copySync(newPath);
+  }
+}
+
+/// Utilities about copy a directory.
+extension CopyDirectory on Directory {
+  /// Copy all files in the directory to the [newPath].
+  void copyAllFilesSync(String newPath) {
+    for (final file in listSync(recursive: true).whereType<File>()) {
+      file.copyEnsureSync(join(newPath, relative(file.path, from: path)));
+    }
+  }
+}
