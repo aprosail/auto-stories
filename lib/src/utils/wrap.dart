@@ -256,6 +256,51 @@ extension WrapAlignment on Widget {
       );
 }
 
+/// Encapsulation of flex layout on a list of widgets.
+extension WrapFlex on List<Widget> {
+  /// Wrap the children with a [Column] widget with all parameters default.
+  ///
+  /// This getter is designed as a shortcut, especially for testing propose.
+  /// And if there's necessary to apply some parameters of [Column],
+  /// please consider using the [asColumn] extension method.
+  /// There's also another getter shortcut [columnCenter]
+  /// which helps to align the children at center.
+  Column get column => Column(children: this);
+
+  /// Wrap the children with a [Column] widget, and make it center aligned.
+  ///
+  /// This getter is designed as a shortcut, especially for testing propose.
+  /// And if there's necessary to apply some parameters of [Column],
+  /// please consider using the [asColumn] extension method.
+  Column get columnCenter => Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    mainAxisSize: MainAxisSize.min,
+    children: this,
+  );
+
+  /// Wrap a column with configurable parameters.
+  Column asColumn({
+    Key? key,
+    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
+    MainAxisSize mainAxisSize = MainAxisSize.max,
+    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+    TextDirection? textDirection,
+    VerticalDirection verticalDirection = VerticalDirection.down,
+    TextBaseline? textBaseline,
+    double spacing = 0.0,
+  }) => Column(
+    key: key,
+    mainAxisAlignment: mainAxisAlignment,
+    mainAxisSize: mainAxisSize,
+    crossAxisAlignment: crossAxisAlignment,
+    textDirection: textDirection,
+    verticalDirection: verticalDirection,
+    textBaseline: textBaseline,
+    spacing: spacing,
+    children: this,
+  );
+}
+
 /// Encapsulation for gestures and mouse interactions.
 extension WrapInteract on Widget {
   /// Wrap current widget with a [GestureDetector].
