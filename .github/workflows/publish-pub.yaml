@@ -1,0 +1,17 @@
+name: publish-pub
+
+on:
+  push: { tags: ["v[0-9]+.[0-9]+.[0-9]+*"] }
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions: { id-token: write }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: flutter-actions/setup-flutter@v4
+        with: { channel: stable, version: 3.29.0 }
+      - uses: flutter-actions/setup-pubdev-credentials@v1
+      - run: dart pub get
+      - run: sh review.sh
+      - run: dart pub publish --force
