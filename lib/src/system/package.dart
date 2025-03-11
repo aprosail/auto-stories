@@ -32,6 +32,18 @@ class DartPackage {
   /// Test directory of the Dart package, the entry of all tests.
   Directory get testDirectory => Directory(join(root.path, 'test'));
 
+  /// The `.pubignore` file of the package.
+  File get pubignore => File(join(root.path, '.pubignore'));
+
+  /// The `.gitignore` file at [root], but possibly not exist.
+  File get rootGitignore => File(join(root.path, '.gitignore'));
+
+  /// All `.gitignore` files inside the package.
+  Iterable<File> get gitignores => root
+      .listSync(recursive: true)
+      .whereType<File>()
+      .where((file) => basename(file.path) == '.gitignore');
+
   /// Run a command in the [root] directory.
   ///
   /// 1. This method is almost an encapsulation on [Process.start].
@@ -110,6 +122,37 @@ class DartPackage {
     if (flutterTestFiles.isNotEmpty) {
       await run('flutter', ['test', ...flutterPaths]);
     }
+  }
+
+  /// Generate a `.pubignore` file at the package [root].
+  ///
+  /// 1. The `.pubignore` file might be generated from other ignore files,
+  /// such as `.gitignore` files, located inside the package [root] directory.
+  /// 2. When generating from a `.gitignore` file inside a child package,
+  /// all items inside will be added with the relative path from [root]
+  /// to the parent directory where the specified [basedOn] file locates.
+  /// 3. The specified [additionalIgnores] will be added to the prefix.
+  /// 4. It's strongly recommended to use [absolute]d and [normalize]d path.
+  void generatePubignore({
+    Iterable<File> basedOn = const [],
+    List<String> additionalIgnores = const [],
+  }) {
+    final buffer = StringBuffer(additionalIgnores.join('\n'));
+    if (additionalIgnores.isNotEmpty) buffer.writeln();
+
+    for (final file in basedOn) {
+      final basePath = normalize(relative(file.parent.path, from: root.path));
+      final resolvedBase = basePath == '.' ? '' : '$basePath/';
+      buffer.writeln('\n# Synced from $basePath');
+      file
+          .readAsStringSync()
+          .split('\n')
+          .map((line) => line.trim())
+          .where((line) => line.isNotEmpty && !line.startsWith('#'))
+          .map((line) => '$resolvedBase$line')
+          .forEach(buffer.writeln);
+    }
+    pubignore.writeAsStringSync('$buffer\n');
   }
 }
 

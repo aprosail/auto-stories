@@ -9,4 +9,5 @@
 # Dart and Flutter auto generated files.
 .dart_tool/
 build/
+.pubignore
 pubspec.lock

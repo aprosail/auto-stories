@@ -1,3 +1,27 @@
+# A shared analysis_options.yaml template.
+#
+# This configuration files is strict and enforces best practices.
+# It enables as much rules as possible,
+# and all disabled rules are commented with the reason.
+#
+# If you'd like to apply the following settings,
+# you can create an analysis_options.yaml file in your project root,
+# and add the following line to it:
+#
+# ```yaml
+# include: package:auto_stories/analysis_options.yaml
+# ```
+#
+# You can also disable some of the rules like this:
+#
+# ```yaml
+# include: package:auto_stories/analysis_options.yaml
+#
+# linter:
+#   rules:
+#     public_member_api_docs: false
+# ```
+
 # Docs for this file: https://dart.dev/tools/analysis#the-analysis-options-file
 # Docs: https://dart.dev/tools/analysis#enabling-additional-type-checks
 analyzer:
