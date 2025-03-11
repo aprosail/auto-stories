@@ -8,6 +8,22 @@
 
 # Dart and Flutter auto generated files.
 .dart_tool/
+**/doc/api/
+**/ios/Flutter/.last_build_id
 build/
+.pub-cache/
+.pub/
 .pubignore
 pubspec.lock
+
+# Symbolication and obfuscation.
+app.*.symbols
+app.*.map.json
+
+# Android build artifacts.
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# Swift package manager files.
+.swiftpm/
