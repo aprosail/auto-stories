@@ -15,5 +15,8 @@
   // File nesting options (enable on local settings as your wish).
   "explorer.fileNesting.patterns": {
     "pubspec.yaml": "pubspec.lock, .metadata"
-  }
+  },
+
+  // Open outer Git repos, configured for syncing into the example folder.
+  "git.openRepositoryInParentFolders": "always"
 }
