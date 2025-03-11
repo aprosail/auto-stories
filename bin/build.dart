@@ -2,6 +2,8 @@ import 'package:auto_stories/generator.dart';
 
 Future<void> main(List<String> arguments) async {
   final package = DartPackage.resolve('.');
+
+  // Generate pubignore file, prepare for publish.
   package.generatePubignore(
     basedOn: [package.rootGitignore],
     additionalIgnores: [
@@ -20,5 +22,11 @@ Future<void> main(List<String> arguments) async {
     ],
   );
 
+  // Copy VSCode settings to the example folder.
+  package
+      .directory(['.vscode'])
+      .copyAllFilesSync(package.directory(['example', '.vscode']).path);
+
+  // Test when necessary (arguments specified).
   if (arguments.contains('test')) await package.test();
 }
