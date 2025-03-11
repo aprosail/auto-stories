@@ -3,12 +3,24 @@
   "description": "Auto Stories development supports.",
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "vscode": "^1.88.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aprosail/auto-stories.git",
+    "directory": "editors/vscode"
+  },
   "private": true,
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "scripts": {
     "postinstall": "vite-node ci.ts",
     "format": "prettier --write .",
     "check": "prettier --check . && eslint",
-    "build": "vite-node ci.ts build"
+    "build": "vite-node ci.ts build",
+    "release": "vite-node ci.ts release"
   },
   "devDependencies": {
     "@eslint/compat": "^1.2.7",
@@ -17,6 +29,7 @@
     "@rollup/plugin-typescript": "^12.1.2",
     "@types/node": "^22.13.10",
     "@types/vscode": "^1.98.0",
+    "@vscode/vsce": "^3.2.2",
     "eslint": "^9.22.0",
     "globals": "^16.0.0",
     "jiti": "^2.4.2",

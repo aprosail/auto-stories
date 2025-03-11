@@ -1,5 +1,6 @@
 import terser from "@rollup/plugin-terser"
 import typescript from "@rollup/plugin-typescript"
+import { createVSIX } from "@vscode/vsce"
 import { copyFileSync, readFileSync, writeFileSync } from "node:fs"
 import { join, relative, resolve } from "node:path"
 import { argv } from "node:process"
@@ -11,7 +12,7 @@ import { rollup } from "rollup"
  * @param src source ts file as the entry of the extension.
  * @param out output compiled and minified script file.
  */
-async function build(src: string, out: string) {
+async function compile(src: string, out: string) {
   const bundle = await rollup({
     plugins: [typescript(), terser()],
     input: src,
@@ -76,10 +77,19 @@ async function main() {
   copyFileSync(join(monorepoRoot, "LICENSE"), join(root, "license.txt"))
   syncAssets(monorepoRoot, root, [".prettierrc.yaml", ".prettierignore"])
 
-  // Compile and build manifest if necessary.
+  // Build mode: build for debug preview.
   if (argv.includes("build")) {
-    await build(join(src, "extension.ts"), outFile)
+    await compile(join(src, "extension.ts"), outFile)
     syncManifest(root, out, outFile, true)
+  }
+
+  // Release mode: build for release and output vsix.
+  if (argv.includes("release")) {
+    await compile(join(src, "extension.ts"), outFile)
+    syncManifest(root, out, outFile, false)
+    syncAssets(root, out, ["readme.md", "changelog.md", "license.txt"])
+    writeFileSync(join(out, ".vscodeignore"), "# Placeholder\n")
+    createVSIX({ cwd: out })
   }
 }
 main()
