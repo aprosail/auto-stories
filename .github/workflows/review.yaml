@@ -13,3 +13,16 @@ jobs:
         with: { channel: stable, version: 3.29.0 }
       - run: dart pub get
       - run: sh review.sh
+
+  review-vscode:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v5
+        with: { node-version: 23 }
+      - name: install node dependencies
+        run: cd editors/vscode; npm install; cd ../..
+      - name: review
+        run: cd editors/vscode; npm run check; cd ../..
+      - name: validate release
+        run: cd editors/vscode; npm run release; cd ../..
