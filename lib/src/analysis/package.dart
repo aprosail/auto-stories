@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:path/path.dart';
+import 'package:yaml/yaml.dart';
 
 /// Utilities about a Dart package.
 class DartPackage {
@@ -42,6 +43,9 @@ class DartPackage {
   /// The `.pubignore` file of the package.
   File get pubignore => file(['.pubignore']);
 
+  /// The `CHANGELOG.md` file directly in the package [root].
+  File get changelog => file(['CHANGELOG.md']);
+
   /// The `.gitignore` file at [root], but possibly not exist.
   File get rootGitignore => file(['.gitignore']);
 
@@ -50,6 +54,14 @@ class DartPackage {
       .listSync(recursive: true)
       .whereType<File>()
       .where((file) => basename(file.path) == '.gitignore');
+
+  /// The `pubspec.yaml` manifest file of current package.
+  File get manifestFile => file(['pubspec.yaml']);
+
+  /// The parsed manifest content in [YamlMap] format.
+  YamlMap get manifest =>
+      loadYamlDocument(manifestFile.readAsStringSync()).contents.value
+          as YamlMap;
 
   /// Run a command in the [root] directory.
   ///
@@ -141,13 +153,14 @@ class DartPackage {
   /// 3. The specified [additionalIgnores] will be added to the prefix.
   /// 4. It's strongly recommended to use [absolute]d and [normalize]d path.
   void generatePubignore({
+    bool basedOnRootGitignore = true,
     Iterable<File> basedOn = const [],
     List<String> additionalIgnores = const [],
   }) {
     final buffer = StringBuffer(additionalIgnores.join('\n'));
     if (additionalIgnores.isNotEmpty) buffer.writeln();
 
-    for (final file in basedOn) {
+    for (final file in [if (basedOnRootGitignore) rootGitignore, ...basedOn]) {
       final basePath = normalize(relative(file.parent.path, from: root.path));
       final resolvedBase = basePath == '.' ? '' : '$basePath/';
       buffer.writeln('\n# Synced from $basePath');
@@ -160,6 +173,37 @@ class DartPackage {
           .forEach(buffer.writeln);
     }
     pubignore.writeAsStringSync('$buffer\n');
+  }
+
+  /// Generate changelog of current version.
+  ///
+  /// Generate a changelog file with the name of [outputFilename],
+  /// containing the changelog of current version.
+  /// under the [root] folder. There is supposed to be a `pubspec.yaml`
+  /// manifest file located directly under the [root] folder,
+  /// where it can get current version from.
+  /// If there's no `CHANGELOG.md` and `pubspec.yaml`
+  /// under the [root] folder it will throw an [Exception].
+  void generateChangelog({String outputFilename = '.changelog.md'}) {
+    final lines = changelog
+        .readAsStringSync()
+        .split('\n')
+        .map((line) => line.trim());
+
+    final buffer = StringBuffer();
+    var inside = false;
+    final version = manifest['version'] as String;
+    for (final line in lines) {
+      if (line == '## $version') {
+        inside = true;
+      } else if (line.startsWith('##') && inside) {
+        break;
+      } else if (inside) {
+        buffer.writeln(line);
+      }
+    }
+    final result = buffer.toString().trim();
+    File(join(root.path, outputFilename)).writeAsStringSync(result);
   }
 }
 

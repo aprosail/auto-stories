@@ -1,26 +1,25 @@
 import 'package:auto_stories/generator.dart';
 
-Future<void> main(List<String> arguments) async {
-  final package = DartPackage.resolve('.');
+const additionalPubIgnores = [
+  'bin/build.dart', // Build script of the package.
+  'editors', // Code editor extensions, not a part of the dart package.
+  'CONTRIBUTING.md', // Unnecessary for pub.dev, read it on GitHub.
+  '*.sh', // Shell scripts for CI/CD.
+  // Unnecessary platform code in the example package.
+  'example/android',
+  'example/ios',
+  'example/linux',
+  'example/macos',
+  'example/test',
+  'example/web',
+  'example/windows',
+];
 
-  // Generate pubignore file, prepare for publish.
-  package.generatePubignore(
-    basedOn: [package.rootGitignore],
-    additionalIgnores: [
-      'bin/build.dart', // Build script of the package.
-      'editors', // Code editor extensions, not a part of the dart package.
-      'CONTRIBUTING.md', // Unnecessary for pub.dev, read it on GitHub.
-      '*.sh', // Shell scripts for CI/CD.
-      // Unnecessary platform code in the example package.
-      'example/android',
-      'example/ios',
-      'example/linux',
-      'example/macos',
-      'example/test',
-      'example/web',
-      'example/windows',
-    ],
-  );
+Future<void> main(List<String> arguments) async {
+  final package =
+      DartPackage.resolve('.')
+        ..generateChangelog()
+        ..generatePubignore(additionalIgnores: additionalPubIgnores);
 
   // Copy VSCode settings to the example folder.
   package

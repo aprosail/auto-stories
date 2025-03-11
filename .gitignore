@@ -14,6 +14,7 @@ build/
 .pub-cache/
 .pub/
 .pubignore
+.changelog.md
 pubspec.lock
 
 # Example folder special files and generated files.

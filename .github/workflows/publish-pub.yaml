@@ -6,7 +6,8 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    permissions: { id-token: write }
+    env: { GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+    permissions: { id-token: write, contents: write }
     steps:
       - uses: actions/checkout@v4
       - uses: flutter-actions/setup-flutter@v4
@@ -14,4 +15,11 @@ jobs:
       - uses: flutter-actions/setup-pubdev-credentials@v1
       - run: dart pub get
       - run: sh review.sh
-      - run: dart pub publish --force
+
+      - name: publish to pub.dev
+        run: dart pub publish --force
+
+      - name: create release
+        run: "gh release create ${{ github.ref_name }} \
+          --title ${{ github.ref_name }} \
+          --notes-file .changelog.md"
