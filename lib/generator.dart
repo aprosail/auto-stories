@@ -21,8 +21,7 @@ import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/file_system/file_system.dart' show ResourceProvider;
 
-export 'src/generate.dart';
-export 'src/system.dart';
+export 'src/analysis.dart';
 
 /// A general proposed abstract class for code generating on files.
 abstract class Generator {

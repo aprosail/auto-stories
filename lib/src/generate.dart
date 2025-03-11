@@ -1,1 +1,0 @@
-export 'generate/annotations.dart';
