@@ -1,5 +1,6 @@
-# Node dependencies.
+# Node dependencies and build artifacts.
 node_modules/
+out/
 
 # Files synced from root directory.
 .prettierignore
