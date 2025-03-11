@@ -3,6 +3,7 @@ import typescript from "@rollup/plugin-typescript"
 import { createVSIX } from "@vscode/vsce"
 import {
   copyFileSync,
+  existsSync,
   readdirSync,
   readFileSync,
   rmSync,
@@ -73,6 +74,7 @@ function syncAssets(from: string, to: string, files: string[]) {
 
 /** Empty everything inside the folder but keep the folder. */
 export function emptyFolder(path: string) {
+  if (!existsSync(path)) return
   for (const name of readdirSync(path)) {
     rmSync(join(path, name), { recursive: true })
   }
