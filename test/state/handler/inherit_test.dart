@@ -21,7 +21,7 @@ void main() {
     const updateButtonLabel = 'update';
 
     await t.pumpWidget(
-      const _Example(
+      const Example(
         message: message,
         updatedMessage: updatedMessage,
         buttonLabel: updateButtonLabel,
@@ -36,8 +36,9 @@ void main() {
   });
 }
 
-class _Example extends StatefulWidget {
-  const _Example({
+class Example extends StatefulWidget {
+  const Example({
+    super.key,
     required this.buttonLabel,
     required this.message,
     required this.updatedMessage,
@@ -48,7 +49,7 @@ class _Example extends StatefulWidget {
   final String updatedMessage;
 
   @override
-  State<_Example> createState() => _ExampleState();
+  State<Example> createState() => _ExampleState();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -60,18 +61,18 @@ class _Example extends StatefulWidget {
   }
 }
 
-class _ExampleState extends State<_Example> {
+class _ExampleState extends State<Example> {
   late String message = widget.message;
 
   @override
   Widget build(BuildContext context) {
-    final detector = Builder(builder: (c) => c.find<String>()!.asText());
+    final probe = Builder(builder: (c) => c.find<String>()!.asText());
     final button = widget
         .buttonLabel //
         .asText()
         .gesture(onTap: () => setState(() => message = widget.updatedMessage));
 
-    return [detector, button].columnCenter.inherit(message);
+    return [probe, button].columnCenter.inherit(message);
   }
 
   @override
