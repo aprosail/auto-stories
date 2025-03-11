@@ -1,7 +1,7 @@
 import terser from "@rollup/plugin-terser"
 import typescript from "@rollup/plugin-typescript"
-import { copyFileSync } from "node:fs"
-import { join, resolve } from "node:path"
+import { copyFileSync, readFileSync, writeFileSync } from "node:fs"
+import { join, relative, resolve } from "node:path"
 import { argv } from "node:process"
 import { rollup } from "rollup"
 
@@ -24,6 +24,36 @@ async function build(src: string, out: string) {
 }
 
 /**
+ * Compile the manifest file from package root to the output folder.
+ *
+ * All fields incompatible with VSCode specification and environment
+ * will be removed, in order to compat the development
+ * and production environment.
+ *
+ * @param src source folder where source package.json manifest file locates.
+ * @param out out folder where output package.json manifest file should locate.
+ * @param outFile the output script file as the entry of the extension.
+ * This path should be an absolute path, or the relative resolution might fail.
+ * @param dev whether to apply dev mode.
+ * If not in dev mode, the output manifest file will be minified.
+ */
+function syncManifest(src: string, out: string, outFile: string, dev = false) {
+  const raw = readFileSync(join(src, "package.json")).toString()
+  const manifest = JSON.parse(raw)
+
+  manifest.type = undefined
+  manifest.scripts = undefined
+  manifest.dependencies = undefined
+  manifest.devDependencies = undefined
+  manifest.main = relative(out, outFile)
+
+  const content = dev
+    ? JSON.stringify(manifest, null, 2)
+    : JSON.stringify(manifest)
+  writeFileSync(join(out, "package.json"), content + "\n")
+}
+
+/**
  * Sync some files from a folder to another folder.
  *
  * @param from folder containing files to sync from.
@@ -35,7 +65,7 @@ function syncAssets(from: string, to: string, files: string[]) {
 }
 
 // Entry point of this script.
-function main() {
+async function main() {
   const root = import.meta.dirname
   const src = join(root, "src")
   const out = join(root, "out")
@@ -48,7 +78,8 @@ function main() {
 
   // Compile and build manifest if necessary.
   if (argv.includes("build")) {
-    build(join(src, "extension.ts"), outFile)
+    await build(join(src, "extension.ts"), outFile)
+    syncManifest(root, out, outFile, true)
   }
 }
 main()
