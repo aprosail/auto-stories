@@ -26,17 +26,24 @@ class DartPackage {
   /// Root directory of the Dart package.
   final Directory root;
 
+  /// Get a directory according to the relative path to package [root].
+  Directory directory(List<String> paths) =>
+      Directory(joinAll([root.path, ...paths]));
+
+  /// Get a file according to the relative path to package [root].
+  File file(List<String> paths) => File(joinAll([root.path, ...paths]));
+
   /// Lib directory of the Dart package, the entry of all libraries.
-  Directory get libDirectory => Directory(join(root.path, 'lib'));
+  Directory get libDirectory => directory(['lib']);
 
   /// Test directory of the Dart package, the entry of all tests.
-  Directory get testDirectory => Directory(join(root.path, 'test'));
+  Directory get testDirectory => directory(['test']);
 
   /// The `.pubignore` file of the package.
-  File get pubignore => File(join(root.path, '.pubignore'));
+  File get pubignore => file(['.pubignore']);
 
   /// The `.gitignore` file at [root], but possibly not exist.
-  File get rootGitignore => File(join(root.path, '.gitignore'));
+  File get rootGitignore => file(['.gitignore']);
 
   /// All `.gitignore` files inside the package.
   Iterable<File> get gitignores => root
@@ -174,4 +181,27 @@ bool containsImport(String code, String importIdentifier) {
     }
   }
   return false;
+}
+
+/// Copy a file and create corresponding folders if necessary.
+extension CopyEnsureFile on File {
+  /// Copy the file and create corresponding folders if necessary,
+  /// to ensure that all folders in the [newPath] exists,
+  /// that the file can be copied safely.
+  void copyEnsureSync(String newPath) {
+    File(newPath).parent.createSync(recursive: true);
+    copySync(newPath);
+  }
+}
+
+/// Utilities about copy a directory.
+extension CopyDirectory on Directory {
+  /// Copy all files in the directory to the [newPath].
+  void copyAllFilesSync(String newPath) {
+    final e = listSync(recursive: true);
+    for (final dir in e.whereType<Directory>()) dir.createSync(recursive: true);
+    for (final file in e.whereType<File>()) {
+      file.copySync(join(newPath, relative(file.path, from: path)));
+    }
+  }
 }

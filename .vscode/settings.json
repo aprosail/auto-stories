@@ -6,14 +6,17 @@
 
   // Format on save (extension required).
   "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {"source.organizeImports": "always"},
+  "editor.codeActionsOnSave": { "source.organizeImports": "always" },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "[ignore]": {"editor.defaultFormatter": "foxundermoon.shell-format"},
-  "[properties]": {"editor.defaultFormatter": "foxundermoon.shell-format"},
-  "[dart]": {"editor.defaultFormatter": "Dart-Code.dart-code"},
+  "[ignore]": { "editor.defaultFormatter": "foxundermoon.shell-format" },
+  "[properties]": { "editor.defaultFormatter": "foxundermoon.shell-format" },
+  "[dart]": { "editor.defaultFormatter": "Dart-Code.dart-code" },
 
   // File nesting options (enable on local settings as your wish).
   "explorer.fileNesting.patterns": {
     "pubspec.yaml": "pubspec.lock, .metadata"
-  }
+  },
+
+  // Open outer Git repos, configured for syncing into the example folder.
+  "git.openRepositoryInParentFolders": "always"
 }

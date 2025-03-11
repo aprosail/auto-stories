@@ -15,6 +15,9 @@ build/
 .pub/
 .pubignore
 pubspec.lock
+
+# Example folder special files and generated files.
+example/.vscode
 !example/pubspec.lock
 
 # Symbolication and obfuscation.

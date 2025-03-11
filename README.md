@@ -29,7 +29,7 @@ This package also contains a Flutter UI framework that helps development.
 
 - `analysis_options.yaml` template, see [here](./lib/analysis_options.yaml).
 - Dart package abstraction for build script,
-  see [here](./lib/src/system/package.dart)
+  see [here](./lib/src/analysis/package.dart)
 
 ## Collaboration and License
 

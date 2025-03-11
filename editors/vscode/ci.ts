@@ -4,9 +4,11 @@ import { createVSIX } from "@vscode/vsce"
 import {
   copyFileSync,
   existsSync,
+  mkdirSync,
   readdirSync,
   readFileSync,
   rmSync,
+  statSync,
   writeFileSync,
 } from "node:fs"
 import { join, relative, resolve } from "node:path"
@@ -73,10 +75,27 @@ function syncAssets(from: string, to: string, files: string[]) {
 }
 
 /** Empty everything inside the folder but keep the folder. */
-export function emptyFolder(path: string) {
+function emptyFolder(path: string) {
   if (!existsSync(path)) return
   for (const name of readdirSync(path)) {
     rmSync(join(path, name), { recursive: true })
+  }
+}
+
+/**
+ * Copy all files and folders inside a folder to the aimed path.
+ *
+ * @param from the folder path to copy from.
+ * @param to the folder path to copy into.
+ */
+function copyFolderSync(from: string, to: string) {
+  mkdirSync(to, { recursive: true })
+  for (const name of readdirSync(from)) {
+    const fromFile = join(from, name)
+    const toFile = join(to, name)
+    const stat = statSync(fromFile)
+    if (stat.isDirectory()) copyFolderSync(fromFile, toFile)
+    else if (stat.isFile()) copyFileSync(fromFile, toFile)
   }
 }
 
@@ -97,6 +116,12 @@ async function main() {
     emptyFolder(out)
     await compile(join(src, "extension.ts"), outFile)
     syncManifest(root, out, outFile, true)
+
+    // Sync vscode settings from monorepo root to the example folder.
+    copyFolderSync(
+      join(monorepoRoot, ".vscode"),
+      join(monorepoRoot, "example", ".vscode"),
+    )
   }
 
   // Release mode: build for release and output vsix.
