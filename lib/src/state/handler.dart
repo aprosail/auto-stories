@@ -266,3 +266,75 @@ class InheritUpdater<T> extends InheritedWidget {
       ..add(ObjectFlagProperty<void Function(T data)>.has('trigger', trigger));
   }
 }
+
+/// Handle a [value] anywhere, even outside the widget tree.
+class React<T> {
+  /// Handle a [value] anywhere, even outside the widget tree.
+  ///
+  /// This is a more flexible way to handle data.
+  /// It doesn't rely on Flutter's widget tree structure.
+  /// But it's not recommended to use it frequently
+  /// as it might increase complexity of your codebase.
+  ///
+  /// You need to register the instance in [State.initState] to
+  /// enable it for a [StatefulWidget], and don't forget to dispose it in
+  /// [State.dispose] to prevent memory leak, like this:
+  ///
+  /// ```dart
+  /// // widget.handler here is a React instance.
+  /// @override
+  /// void initState() {
+  ///   super.initState();
+  ///   widget.handler.states.add(this);
+  /// }
+  /// @override
+  /// void dispose() {
+  ///   widget.handler.states.remove(this);
+  ///   super.dispose();
+  /// }
+  /// ```
+  ///
+  /// You may also specify [callbacks] to call once [value] has changed,
+  /// and you can also unregister it by removing it from the [callbacks].
+  ///
+  /// ```dart
+  /// void increase() => counter++;
+  /// handler.callbacks.add(increase);
+  /// handler.callbacks.remove(increase);
+  /// ```
+  React(this._value);
+
+  T _value;
+
+  /// Current handled value.
+  T get value => _value;
+
+  /// The all [states] and [callbacks] will only be triggered
+  /// when the [value] has changed ([data] is not equal to [value] here).
+  /// If you do want to trigger all [states] and [callbacks]
+  /// regardless of whether the [value] has changed,
+  /// you may consider calling the [trigger] method directly.
+  set value(T data) {
+    if (_value == data) return;
+    _value = data;
+    trigger();
+  }
+
+  /// All registered [State]s here will be called [State.setState]
+  /// once the value changed, in order to update all corresponding [Widget]s.
+  /// You can register a [State] when [State.initState],
+  /// and don't forget to unregister it when [State.dispose].
+  final Set<State> states = {};
+
+  /// All registered callbacks here will be called once the value changed.
+  /// You can register a callback using [Set.add]
+  /// and unregister it using [Set.remove].
+  final Set<void Function()> callbacks = {};
+
+  /// Trigger all registered [states] and [callbacks].
+  void trigger() {
+    // ignore: invalid_use_of_protected_member need to call update outside.
+    for (final state in states) if (state.mounted) state.setState(() {});
+    for (final callback in callbacks) callback.call();
+  }
+}
