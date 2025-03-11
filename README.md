@@ -36,4 +36,4 @@ This package also contains a Flutter UI framework that helps development.
 - Welcome to contribute, and please refer
   to [the Contributing Guide](./CONTRIBUTING.md)
 - This package and and corresponding tools inside are released under
-  [the MIT License](./LICENSE), fell free to use, even for commercial propose.
+  [the MIT License](./LICENSE), feel free to use, even for commercial propose.
