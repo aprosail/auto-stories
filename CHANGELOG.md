@@ -10,6 +10,7 @@
 - `feat`: dart package abstraction and common utilities.
 
 - `perf`: remove unnecessary linter rules.
+- `docs`: more readable docs in readme.
 
 ## 0.0.1
 
