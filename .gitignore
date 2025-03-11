@@ -10,9 +10,3 @@
 .dart_tool/
 build/
 pubspec.lock
-
-# VSCode Extension: Node dependencies and auto generated files.
-node_modules/
-editors/vscode/.prettierrc.yaml
-editors/vscode/.prettierignore
-editors/vscode/license.txt

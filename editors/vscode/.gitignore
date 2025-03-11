@@ -1,0 +1,7 @@
+# Node dependencies.
+node_modules/
+
+# Files synced from root directory.
+.prettierignore
+.prettierrc.yaml
+license.txt
