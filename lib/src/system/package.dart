@@ -111,6 +111,36 @@ class DartPackage {
       await run('flutter', ['test', ...flutterPaths]);
     }
   }
+
+  /// Generate a `.pubignore` file at the package [root].
+  ///
+  /// 1. The `.pubignore` file might be generated from other ignore files,
+  /// such as `.gitignore` files, located inside the package [root] directory.
+  /// 2. When generating from a `.gitignore` file inside a child package,
+  /// all items inside will be added with the relative path from [root]
+  /// to the parent directory where the specified [basedOn] file locates.
+  /// 3. The specified [additionalIgnores] will be added to the prefix.
+  /// 4. It's strongly recommended to use [absolute]d and [normalize]d path.
+  void generatePubignore({
+    Iterable<File> basedOn = const [],
+    List<String> additionalIgnores = const [],
+  }) {
+    final buffer = StringBuffer(additionalIgnores.join('\n'));
+    if (additionalIgnores.isNotEmpty) buffer.writeln();
+
+    for (final file in basedOn) {
+      final basePath = normalize(relative(file.parent.path, from: root.path));
+      final resolvedBase = basePath == '.' ? '' : '$basePath/';
+      buffer.writeln('# Synced from $basePath');
+      file
+          .readAsStringSync()
+          .split('\n')
+          .map((line) => line.trim())
+          .where((line) => line.isNotEmpty && !line.startsWith('#'))
+          .map((line) => '$resolvedBase$line')
+          .forEach(buffer.writeln);
+    }
+  }
 }
 
 const _dartTestImport = 'package:test/';
